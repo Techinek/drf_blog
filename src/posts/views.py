@@ -9,7 +9,7 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .models import Author, Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostCreateSerializer
 
 
 def home(request):
@@ -17,8 +17,18 @@ def home(request):
 
 
 class PostListView(ListAPIView):
-
     """View to render posts"""
+
     permission_classes = (AllowAny,)
     serializer_class = PostSerializer
     queryset = Post.objects.all()
+
+
+
+class PostCreateView(CreateAPIView):
+    """View to create posts"""
+
+    permission_classes = (AllowAny, )
+    serializer_class = PostCreateSerializer
+    queryset = Post.objects.all()
+
