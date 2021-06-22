@@ -1,10 +1,31 @@
+// Process the data from the form on the main page
+
 document.getElementById('postForm').addEventListener('submit', e => {
     e.preventDefault();
-    const title = document.querySelector('#title');
-    const content = document.querySelector('#content');
-    const author = document.querySelector('#author');
+    const title = document.querySelector('#title').value;
+    const content = document.querySelector('#content').value;
+    const author = document.querySelector('#author').value;
+    createPOST(title, content, author);
 })
 
+function createPOST(title, content, author) {
+    const data = {
+        method: "POST",
+        body: {
+        title, content, author
+        }
+    }
+    fetch('/api/posts/create/', data)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(err => {
+            console.error(err);
+        })
+}
+
+// Render posts on the main page
 
 function getPostList() {
     fetch('/api/posts/')
@@ -16,6 +37,8 @@ function getPostList() {
             console.error(err);
         })
 }
+
+
 
 function renderPosts(data) {
     return data.map(post => {
