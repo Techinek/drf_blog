@@ -1,3 +1,11 @@
+document.getElementById('postForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const title = document.querySelector('#title');
+    const content = document.querySelector('#content');
+    const author = document.querySelector('#author');
+})
+
+
 function getPostList() {
     fetch('/api/posts/')
         .then(res => res.json())
@@ -36,9 +44,9 @@ function renderPost(post) {
 
     author.innerText = post.author;
     content.innerText = post.content;
-    title.innerText = `${post.title} written by ${post.author}` ;
-    publishedDate.innerText = `Published: ${new Date(post.published_date).toUTCString()}` ;
-    lastUpdated.innerText = `Last updated: ${new Date(post.updated).toUTCString()}` ;
+    title.innerText = `${post.title} written by ${post.author}`;
+    publishedDate.innerText = `Published: ${new Date(post.published_date).toUTCString()}`;
+    lastUpdated.innerText = `Last updated: ${new Date(post.updated).toUTCString()}`;
 
 
     append(div, title);
