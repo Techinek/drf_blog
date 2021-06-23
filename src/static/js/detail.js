@@ -1,66 +1,29 @@
 const root = document.getElementById('root');
 
-// Process the data from the form on the main page
+// Get ID of the post from url
 
-document.getElementById('postForm').addEventListener('submit', e => {
-    e.preventDefault();
+const pathname = window.location.pathname;
+const pathnameParts = pathname.split('/');
+const postId = pathnameParts[pathnameParts.length - 2];
 
-    const title = document.querySelector('#title');
-    const content = document.querySelector('#content');
-    const author = document.querySelector('#author');
 
-    createPOST(title.value, content.value, author.value);
+// Render a single post on the main page
 
-    title.value = '';
-    content.value = '';
-    author.value = '';
-
-})
-
-function createPOST(title, content, author) {
-    const data = {
-        method: "POST",
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-            title, content, author
-        })
-    }
-    fetch('/api/posts/create/', data)
-        .then(() => {
-            getPostList();
-        })
-        .catch(err => {
-            console.error(err);
-        })
-}
-
-// Render posts on the main page
-
-function getPostList() {
-    fetch('/api/posts/')
+function getPost(postId) {
+    fetch(`/api/posts/${postId}/`)
         .then(res => res.json())
         .then(data => {
             clearChildren(root);
-            renderPosts(data);
+            renderPost(data);
         })
         .catch(err => {
             console.error(err);
         })
-}
-
-
-function renderPosts(data) {
-    return data.map(post => {
-        renderPost(post);
-    })
 }
 
 
 function createNode(element) {
     return document.createElement(element)
-
 }
 
 
@@ -71,8 +34,6 @@ function append(parent, elem) {
 function renderPost(post) {
     const div = createNode('div');
     div.className = 'post-item';
-    const link = createNode('a');
-    link.href = `posts/${post.id}/`
     const title = createNode('h2');
     const content = createNode('p');
     const publishedDate = createNode('span');
@@ -85,8 +46,8 @@ function renderPost(post) {
     publishedDate.innerText = `Published: ${new Date(post.published_date).toUTCString()}`;
     lastUpdated.innerText = `Last updated: ${new Date(post.updated).toUTCString()}`;
 
-    append(link, title);
-    append(div, link);
+
+    append(div, title);
     append(div, content);
     append(div, publishedDate);
     append(div, lastUpdated);
@@ -100,5 +61,4 @@ function clearChildren(node) {
     }
 }
 
-
-getPostList()
+getPost(postId);
