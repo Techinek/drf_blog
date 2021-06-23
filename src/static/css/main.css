@@ -3,6 +3,7 @@
     transition: 0.3s;
     padding: 5px;
     width: 300px;
+    position: relative;
 }
 
 .post-item:hover {
@@ -11,4 +12,10 @@
 
 #root {
     padding: 2px 16px;
+}
+
+.post-delete-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
 }

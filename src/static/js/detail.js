@@ -72,17 +72,31 @@ function updatePost(title, content, author) {
         })
 }
 
+function deletePost(postId) {
+    const data = {
+        method: "DELETE",
+        headers: {
+            'Content-Type': "application/json"
+        }
+    }
+    fetch(`/api/posts/${postId}/delete/`, data)
+        .then(() => {
+            window.location = '/';
+        })
+        .catch(err => {
+            console.error(err);
+        })
+}
+
 function prepopulateForm(data) {
     title.value = data.title;
     content.value = data.content;
     author.value = data.author;
 }
 
-
 function createNode(element) {
     return document.createElement(element)
 }
-
 
 function append(parent, elem) {
     return parent.appendChild(elem)
@@ -93,6 +107,18 @@ function appendAuthor(data) {
     const author = createNode('small');
     author.innerText = ` written by ${data.username}`;
     append(title, author);
+}
+
+function appendDeleteBtn(post) {
+    const postDiv = document.querySelector('.post-item');
+    const deleteBtn = createNode('button');
+    deleteBtn.innerText = 'Delete';
+    deleteBtn.className = 'post-delete-btn';
+    deleteBtn.addEventListener('click', e => {
+        deletePost(post.id);
+    });
+
+    append(postDiv, deleteBtn);
 }
 
 function renderPost(post) {
@@ -116,6 +142,8 @@ function renderPost(post) {
     append(div, publishedDate);
     append(div, lastUpdated);
     append(root, div);
+
+    appendDeleteBtn(post);
 
 }
 

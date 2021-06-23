@@ -3,7 +3,8 @@ from rest_framework.generics import (
     ListAPIView,
     RetrieveAPIView,
     CreateAPIView,
-    UpdateAPIView
+    UpdateAPIView,
+    DestroyAPIView
 )
 from rest_framework.permissions import AllowAny
 
@@ -59,4 +60,10 @@ class PostUpdateView(UpdateAPIView):
 
     permission_classes = (AllowAny,)
     serializer_class = PostCreateSerializer
+    queryset = Post.objects.all()
+
+class PostDeleteView(DestroyAPIView):
+    """View to destroy a single post"""
+
+    permission_classes = (AllowAny,)
     queryset = Post.objects.all()
